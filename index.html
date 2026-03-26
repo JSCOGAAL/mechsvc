@@ -13,13 +13,11 @@
     --navy: #0F1F3D;
     --navy-mid: #1A2F52;
     --navy-light: #243A65;
-    --charcoal: #1C1C1E;
-    --steel: #2C3E5A;
     --text: #E8EDF5;
     --text-dim: #7A90B0;
     --text-muted: #4A5F7F;
-    --border: rgba(255,255,255,0.07);
-    --card-bg: rgba(26,47,82,0.6);
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(26,47,82,0.7);
     --good: #2ECC71;
     --warn: #F39C12;
     --bad: #E74C3C;
@@ -27,644 +25,160 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
     background: var(--navy);
     color: var(--text);
     font-family: 'Barlow', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
   }
 
-  /* Background texture */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background:
-      radial-gradient(ellipse 80% 50% at 10% 20%, rgba(232,96,10,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 90% 80%, rgba(15,31,61,0.9) 0%, transparent 70%),
-      repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 60px,
-        rgba(255,255,255,0.012) 60px,
-        rgba(255,255,255,0.012) 61px
-      );
-    pointer-events: none;
-    z-index: 0;
+      radial-gradient(ellipse 70% 50% at 5% 10%, rgba(232,96,10,0.07) 0%, transparent 60%),
+      repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.01) 80px, rgba(255,255,255,0.01) 81px);
+    pointer-events: none; z-index: 0;
   }
 
-  .container {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    padding: 24px 24px;
+  .wrap {
+    position: relative; z-index: 1;
+    width: 100%; height: 100vh;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    padding: 1vh 1.2vw;
+    gap: 0.8vh;
   }
 
-  /* Header */
   header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 40px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 0.6vh; border-bottom: 1px solid var(--border);
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
+  .brand { display: flex; align-items: center; gap: 1vw; }
   .brand-mark {
-    width: 52px;
-    height: 52px;
-    background: var(--orange);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 4.5vh; height: 4.5vh; background: var(--orange);
+    display: flex; align-items: center; justify-content: center;
     clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%);
+    flex-shrink: 0;
   }
-
-  .brand-mark svg { width: 28px; height: 28px; fill: white; }
-
+  .brand-mark svg { width: 55%; height: 55%; fill: white; }
   .brand-text h1 {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--text);
-    line-height: 1;
+    font-size: clamp(20px, 2.8vh, 38px);
+    font-weight: 900; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1;
   }
+  .brand-text p { font-size: clamp(9px, 1.1vh, 14px); color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
+  .header-right { display: flex; align-items: center; gap: 2vw; }
+  .mtd-badge { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(16px, 2.2vh, 30px); font-weight: 800; color: var(--orange); letter-spacing: 0.08em; text-transform: uppercase; }
+  .header-meta { text-align: right; font-size: clamp(9px, 1.1vh, 14px); color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.6; }
 
-  .brand-text p {
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-top: 3px;
-  }
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: 2.4fr 1fr 1fr 1fr 1fr; gap: 0.6vw; }
+  .kpi { background: var(--card-bg); border: 1px solid var(--border); border-top: 3px solid var(--orange); padding: 1vh 1.2vw; position: relative; backdrop-filter: blur(6px); }
+  .kpi-label { font-size: clamp(8px, 0.95vh, 12px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4vh; }
+  .kpi-val { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(24px, 4vh, 54px); font-weight: 900; line-height: 1; color: var(--text); }
+  .kpi-sub { font-size: clamp(8px, 0.9vh, 12px); color: var(--text-muted); margin-top: 0.3vh; }
+  .kpi-icon { position: absolute; top: 1.2vh; right: 1vw; width: 3.5vh; height: 3.5vh; border-radius: 50%; background: var(--orange-dim); display: flex; align-items: center; justify-content: center; }
+  .kpi-icon svg { width: 55%; height: 55%; stroke: var(--orange); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .goal-row { display: flex; align-items: flex-end; gap: 1.5vw; margin-bottom: 0.8vh; }
+  .goal-slash { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(14px, 2vh, 26px); font-weight: 700; color: var(--text-muted); margin-bottom: 3px; }
+  .goal-pct { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(14px, 2vh, 24px); font-weight: 800; color: var(--warn); margin-bottom: 3px; margin-left: auto; }
+  .goal-bar-track { width: 100%; height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; margin-bottom: 0.4vh; }
+  .goal-bar-fill { height: 100%; background: linear-gradient(90deg, var(--orange), #FF9A50); border-radius: 3px; }
+  .goal-info { display: flex; justify-content: space-between; font-size: clamp(8px, 0.9vh, 11px); color: var(--text-muted); }
 
-  .header-meta {
-    text-align: right;
-  }
+  /* BODY */
+  .body-grid { display: grid; grid-template-columns: 1fr 22vw; gap: 0.6vw; overflow: hidden; min-height: 0; }
+  .left-col { display: grid; grid-template-rows: 1fr auto; gap: 0.6vh; overflow: hidden; min-height: 0; }
+  .right-col { display: flex; flex-direction: column; gap: 0.6vh; overflow: hidden; min-height: 0; }
 
-  .header-meta .period {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--orange);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
+  /* SECTION */
+  .section { background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(6px); overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+  .sec-header { display: flex; align-items: center; justify-content: space-between; padding: 0.7vh 1vw; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(11px, 1.5vh, 20px); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sec-badge { font-size: clamp(8px, 0.85vh, 11px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); background: var(--orange-dim); padding: 2px 8px; font-weight: 600; }
+  .sort-tabs { display: flex; gap: 2px; }
+  .sort-tab { font-size: clamp(8px, 0.9vh, 11px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); background: none; border: 1px solid var(--border); padding: 3px 8px; cursor: pointer; font-family: 'Barlow', sans-serif; font-weight: 600; transition: all 0.15s; }
+  .sort-tab.active { background: var(--orange); border-color: var(--orange); color: white; }
+  .sort-tab:hover:not(.active) { border-color: var(--orange); color: var(--orange); }
 
-  .header-meta .subtitle {
-    font-size: 12px;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-top: 2px;
-  }
-
-  /* KPI Cards */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 32px;
-  }
-
-  .kpi-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
-  }
-
-  .kpi-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--orange);
-  }
-
-  .kpi-card .label {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-  }
-
-  .kpi-card .value {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 36px;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--text);
-  }
-
-  .kpi-card .sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 6px;
-  }
-
-  .kpi-card .badge {
-    position: absolute;
-    top: 18px;
-    right: 16px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--orange-dim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .kpi-card .badge svg {
-    width: 18px; height: 18px;
-    stroke: var(--orange);
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  /* Main layout */
-  .main-grid {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  /* Table section */
-  .section {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(8px);
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 24px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text);
-  }
-
-  .section-badge {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--orange);
-    background: var(--orange-dim);
-    padding: 3px 10px;
-    font-weight: 600;
-  }
-
-  /* Tech Table */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  thead th {
-    font-size: 9px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-weight: 600;
-    padding: 10px 12px;
-    text-align: right;
-    border-bottom: 1px solid var(--border);
-  }
-
-  thead th:first-child { text-align: left; padding-left: 24px; }
-
-  tbody tr {
-    transition: background 0.15s;
-    cursor: default;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-  }
-
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; }
+  thead th { font-size: clamp(8px, 0.95vh, 12px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; padding: 0.5vh 0.6vw; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  thead th:first-child { text-align: left; padding-left: 1vw; }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.12s; }
   tbody tr:hover { background: rgba(232,96,10,0.04); }
-
   tbody tr:last-child { border-bottom: none; }
-
-  tbody td {
-    padding: 13px 12px;
-    font-size: 13px;
-    text-align: right;
-    color: var(--text-dim);
-  }
-
-  tbody td:first-child {
-    text-align: left;
-    padding-left: 24px;
-  }
-
-  .tech-name {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .tech-avatar {
-    width: 30px;
-    height: 30px;
-    background: var(--navy-light);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--orange);
-    flex-shrink: 0;
-  }
-
-  .name-text {
-    font-weight: 500;
-    color: var(--text);
-    font-size: 13.5px;
-  }
-
-  .highlight { color: var(--text) !important; font-weight: 600; }
-
-  /* Mini bar for efficiency */
-  .bar-cell { min-width: 100px; }
-
-  .bar-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .bar-track {
-    width: 50px;
-    height: 4px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .bar-fill {
-    height: 100%;
-    border-radius: 2px;
-    background: var(--orange);
-    transition: width 0.6s ease;
-  }
-
-  .bar-val { font-size: 12px; min-width: 42px; text-align: right; }
-
-  /* Status pill */
-  .pill {
-    display: inline-block;
-    padding: 2px 8px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-  }
-
+  tbody td { padding: 0.6vh 0.6vw; font-size: clamp(12px, 1.5vh, 20px); text-align: right; color: var(--text-dim); }
+  tbody td:first-child { text-align: left; padding-left: 1vw; }
+  .tech-cell { display: flex; align-items: center; gap: 0.6vw; }
+  .avatar { width: 3.2vh; height: 3.2vh; flex-shrink: 0; background: var(--navy-light); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: clamp(9px, 1.15vh, 15px); font-weight: 800; color: var(--orange); }
+  .tech-name { font-weight: 500; color: var(--text); font-size: clamp(12px, 1.5vh, 20px); }
+  .hl { color: var(--text) !important; font-weight: 700; }
+  .bar-cell { display: flex; align-items: center; gap: 0.4vw; justify-content: flex-end; }
+  .bar-track { width: 3.5vw; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--orange); border-radius: 2px; }
+  .pill { display: inline-block; padding: 1px 7px; font-size: clamp(10px, 1.2vh, 15px); font-weight: 700; }
   .pill-good { background: rgba(46,204,113,0.12); color: var(--good); }
   .pill-warn { background: rgba(243,156,18,0.12); color: var(--warn); }
-  .pill-bad  { background: rgba(231,76,60,0.12);  color: var(--bad);  }
+  .pill-bad  { background: rgba(231,76,60,0.12);  color: var(--bad); }
 
-  /* Sidebar */
-  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  /* BOTTOM 3 */
+  .bottom-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.6vw; min-height: 0; }
+  .mini-row { display: flex; align-items: center; padding: 0.5vh 0.8vw; border-bottom: 1px solid rgba(255,255,255,0.03); gap: 0.6vw; }
+  .mini-row:last-child { border-bottom: none; }
+  .mini-name { font-size: clamp(11px, 1.3vh, 17px); color: var(--text-dim); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mini-bar-track { width: 5vw; height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+  .mini-bar-fill { height: 100%; border-radius: 3px; }
+  .mini-val { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(13px, 1.6vh, 22px); font-weight: 800; min-width: 4vw; text-align: right; }
+  .mini-extra { font-size: clamp(8px, 0.95vh, 12px); color: var(--text-muted); margin-right: 0.3vw; }
 
-  /* Bar chart */
-  .chart-section { padding: 0; }
-
-  .chart-body { padding: 16px 20px 20px; }
-
-  .chart-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 13px;
-  }
-
-  .chart-row:last-child { margin-bottom: 0; }
-
-  .chart-label {
-    font-size: 11px;
-    color: var(--text-dim);
-    width: 72px;
-    flex-shrink: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .chart-bar-track {
-    flex: 1;
-    height: 22px;
-    background: rgba(255,255,255,0.05);
-    position: relative;
-  }
-
-  .chart-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--navy-mid), var(--orange));
-    position: relative;
-    transition: width 0.8s ease;
-  }
-
-  .chart-bar-fill.top { background: linear-gradient(90deg, var(--orange-light), #FF9A50); }
-
-  .chart-bar-val {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: white;
-  }
-
-  /* Leaderboard */
-  .leader-list { padding: 8px 0; }
-
-  .leader-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-    transition: background 0.15s;
-  }
-
+  /* SIDEBAR */
+  .leader-row { display: flex; align-items: center; gap: 0.8vw; padding: 0.6vh 0.8vw; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.12s; }
   .leader-row:last-child { border-bottom: none; }
   .leader-row:hover { background: rgba(232,96,10,0.04); }
-
-  .leader-rank {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--text-muted);
-    width: 24px;
-    text-align: center;
-    flex-shrink: 0;
-  }
-
+  .leader-rank { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(18px, 2.5vh, 34px); font-weight: 900; color: var(--text-muted); width: 2vw; text-align: center; flex-shrink: 0; }
   .leader-rank.gold { color: #FFD700; }
   .leader-rank.silver { color: #C0C0C0; }
   .leader-rank.bronze { color: #CD7F32; }
-
   .leader-info { flex: 1; min-width: 0; }
+  .leader-name { font-size: clamp(12px, 1.4vh, 18px); font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .leader-meta { font-size: clamp(9px, 1vh, 13px); color: var(--text-muted); margin-top: 1px; }
+  .leader-val { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(14px, 2vh, 26px); font-weight: 900; color: var(--orange); flex-shrink: 0; }
 
-  .leader-name {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .chart-row { display: flex; align-items: center; gap: 0.5vw; padding: 0.35vh 0.8vw; }
+  .chart-label { font-size: clamp(10px, 1.2vh, 15px); color: var(--text-dim); width: 5vw; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chart-track { flex: 1; height: clamp(18px, 2.5vh, 32px); background: rgba(255,255,255,0.05); position: relative; }
+  .chart-fill { height: 100%; background: linear-gradient(90deg, var(--navy-mid), var(--orange)); }
+  .chart-fill.top-bar { background: linear-gradient(90deg, var(--orange-light), #FF9A50); }
+  .chart-fillval { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-family: 'Barlow Condensed', sans-serif; font-size: clamp(11px, 1.4vh, 18px); font-weight: 700; color: white; }
 
-  .leader-meta {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 1px;
-  }
+  /* FOOTER */
+  footer { display: flex; align-items: center; justify-content: space-between; padding-top: 0.5vh; border-top: 1px solid var(--border); flex-shrink: 0; }
+  .foot-l, .foot-m { font-size: clamp(8px, 0.9vh, 12px); color: var(--text-muted); letter-spacing: 0.06em; }
+  .foot-r { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(10px, 1.2vh, 16px); font-weight: 700; color: var(--orange); letter-spacing: 0.06em; text-transform: uppercase; }
 
-  .leader-val {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--orange);
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  /* Bottom row */
-  .bottom-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-  }
-
-  /* Gauge */
-  .gauge-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 24px 20px 20px;
-  }
-
-  .gauge-svg { width: 140px; height: 80px; }
-
-  .gauge-val {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--text);
-    margin-top: 4px;
-    text-align: center;
-  }
-
-  .gauge-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-align: center;
-    margin-top: 2px;
-  }
-
-  .gauges-row {
-    display: flex;
-    gap: 0;
-  }
-
-  .gauge-item {
-    flex: 1;
-    padding: 20px 16px;
-    text-align: center;
-    border-right: 1px solid var(--border);
-  }
-
-  .gauge-item:last-child { border-right: none; }
-
-  .gauge-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 38px;
-    font-weight: 900;
-    line-height: 1;
-  }
-
-  .gauge-num.good { color: var(--good); }
-  .gauge-num.warn { color: var(--warn); }
-  .gauge-num.orange { color: var(--orange); }
-
-  .gauge-lbl {
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  .gauge-sub {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 2px;
-  }
-
-  /* Recall section */
-  .recall-list { padding: 8px 0; }
-
-  .recall-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-  }
-
-  .recall-row:last-child { border-bottom: none; }
-
-  .recall-name { font-size: 13px; color: var(--text-dim); }
-
-  .recall-bar-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .recall-track {
-    width: 60px;
-    height: 5px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  .recall-fill {
-    height: 100%;
-    border-radius: 3px;
-  }
-
-  .recall-pct {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    min-width: 38px;
-    text-align: right;
-  }
-
-  /* Footer */
-  footer {
-    margin-top: 32px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  footer .foot-left {
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-  }
-
-  footer .foot-right {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--orange);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  /* Sort control */
-  .sort-tabs {
-    display: flex;
-    gap: 2px;
-  }
-
-  .sort-tab {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    background: none;
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    cursor: pointer;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 600;
-    transition: all 0.15s;
-  }
-
-  .sort-tab.active {
-    background: var(--orange);
-    border-color: var(--orange);
-    color: white;
-  }
-
-  .sort-tab:hover:not(.active) {
-    border-color: var(--orange);
-    color: var(--orange);
-  }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .kpi-card  { animation: fadeUp 0.4s ease both; }
-  .kpi-card:nth-child(1) { animation-delay: 0.05s; }
-  .kpi-card:nth-child(2) { animation-delay: 0.10s; }
-  .kpi-card:nth-child(3) { animation-delay: 0.15s; }
-  .kpi-card:nth-child(4) { animation-delay: 0.20s; }
-  .kpi-card:nth-child(5) { animation-delay: 0.25s; }
-
-  .section { animation: fadeUp 0.5s 0.2s ease both; }
-
-  @media (max-width: 1100px) {
-    .main-grid { grid-template-columns: 1fr; }
-    .bottom-grid { grid-template-columns: 1fr 1fr; }
-    .kpi-grid { grid-template-columns: 1fr 1fr 1fr; }
-    .kpi-card[style] { grid-column: span 3; }
-  }
-
-  @media (max-width: 640px) {
-    .kpi-grid { grid-template-columns: 1fr 1fr; }
-    .kpi-card[style] { grid-column: span 2; }
-    .bottom-grid { grid-template-columns: 1fr; }
-    .container { padding: 16px; }
-    header { flex-direction: column; align-items: flex-start; gap: 12px; }
-  }
+  /* LOADING */
+  #loading { position: fixed; inset: 0; background: var(--navy); z-index: 200; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2vh; }
+  #loading h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 5vh; font-weight: 900; color: var(--orange); letter-spacing: 0.1em; }
+  #loading p { font-size: 1.5vh; color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase; }
+  .load-bar { width: 20vw; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+  .load-bar-fill { width: 40%; height: 100%; background: var(--orange); border-radius: 2px; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0% { transform: translateX(-150%); } 100% { transform: translateX(350%); } }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
+<div id="loading">
+  <h2>JACKSON SERVICES</h2>
+  <p>Loading live data from Google Sheets…</p>
+  <div class="load-bar"><div class="load-bar-fill"></div></div>
+</div>
+
+<div class="wrap">
+
   <header>
     <div class="brand">
       <div class="brand-mark">
@@ -675,382 +189,272 @@
         <p>Mechanical Service Performance Feed</p>
       </div>
     </div>
-    <div class="header-meta">
-      <div class="period">Month to Date</div>
-      <div class="subtitle">8 Technicians &nbsp;·&nbsp; 220 Completed Jobs</div>
+    <div class="header-right">
+      <div class="header-meta" id="header-meta">— Technicians &nbsp;·&nbsp; — Jobs</div>
+      <div class="mtd-badge">Month to Date</div>
     </div>
   </header>
 
-  <!-- Loading overlay -->
-  <div id="loading-overlay" style="position:fixed;inset:0;background:var(--navy);z-index:100;display:flex;align-items:center;justify-content:center;">
-    <div style="text-align:center">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--orange);letter-spacing:0.1em;margin-bottom:10px;">JACKSON SERVICES</div>
-      <div style="font-size:13px;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">Loading live data from Google Sheets…</div>
-      <div style="margin-top:20px;width:200px;height:3px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;margin-left:auto;margin-right:auto;">
-        <div style="width:60%;height:100%;background:var(--orange);border-radius:2px;animation:loadpulse 1.2s ease-in-out infinite;"></div>
-      </div>
+  <div class="kpi-row">
+    <div class="kpi" id="kpi-revenue"></div>
+    <div class="kpi">
+      <div class="kpi-label">Avg Rev / Job Hour</div>
+      <div class="kpi-val" id="v-johhour">—</div>
+      <div class="kpi-sub">Team average</div>
+      <div class="kpi-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Avg Rev / Paid Hour</div>
+      <div class="kpi-val" id="v-paidhour">—</div>
+      <div class="kpi-sub">Team average</div>
+      <div class="kpi-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Avg Billable Eff.</div>
+      <div class="kpi-val" id="v-billable">—</div>
+      <div class="kpi-sub">Team average</div>
+      <div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total Paid Hours</div>
+      <div class="kpi-val" id="v-hours">—</div>
+      <div class="kpi-sub">Across all techs</div>
+      <div class="kpi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
     </div>
   </div>
-  <style>@keyframes loadpulse{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}</style>
 
-  <!-- KPI Cards -->
-  <div class="kpi-grid">
-    <div class="kpi-card" id="kpi-revenue" style="grid-column: span 1;"></div>
-    <div class="kpi-card" id="kpi-johhour"></div>
-    <div class="kpi-card" id="kpi-paidhour"></div>
-    <div class="kpi-card" id="kpi-billable"></div>
-    <div class="kpi-card" id="kpi-hours"></div>
-  </div>
+  <div class="body-grid">
+    <div class="left-col">
 
-  <!-- Main Grid -->
-  <div class="main-grid">
-
-    <!-- Tech Table -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Technician Breakdown</span>
-        <div class="sort-tabs">
-          <button class="sort-tab active" onclick="sortTable('revenue')">Revenue</button>
-          <button class="sort-tab" onclick="sortTable('jobHour')">$/Job Hr</button>
-          <button class="sort-tab" onclick="sortTable('efficiency')">Efficiency</button>
-        </div>
-      </div>
-      <table id="techTable">
-        <thead>
-          <tr>
-            <th>Technician</th>
-            <th>Paid Hrs</th>
-            <th>Jobs</th>
-            <th>Rev / Job Hr</th>
-            <th>Rev / Paid Hr</th>
-            <th>Sold Hr Eff.</th>
-            <th>Billable Eff.</th>
-            <th>Completed Rev</th>
-          </tr>
-        </thead>
-        <tbody id="techBody">
-          <!-- Filled by JS -->
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-
-      <!-- Revenue Leaderboard -->
       <div class="section">
-        <div class="section-header">
-          <span class="section-title">Revenue Leaders</span>
-          <span class="section-badge">Top Earners</span>
+        <div class="sec-header">
+          <span class="sec-title">Technician Breakdown</span>
+          <div class="sort-tabs">
+            <button class="sort-tab active" onclick="sortTable('revenue',this)">Revenue</button>
+            <button class="sort-tab" onclick="sortTable('jobHour',this)">$/Job Hr</button>
+            <button class="sort-tab" onclick="sortTable('efficiency',this)">Efficiency</button>
+          </div>
         </div>
-        <div class="leader-list" id="leaderList"></div>
-      </div>
-
-      <!-- Rev/Job Hour Chart -->
-      <div class="section chart-section">
-        <div class="section-header">
-          <span class="section-title">Rev / Job Hour</span>
-          <span class="section-badge">Ranked</span>
+        <div style="overflow:hidden;flex:1;">
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align:left;padding-left:1vw;">Technician</th>
+                <th>Paid Hrs</th><th>Jobs</th><th>Rev / Job Hr</th>
+                <th>Rev / Paid Hr</th><th>Sold Hr Eff.</th>
+                <th>Billable Eff.</th><th>Completed Rev</th>
+              </tr>
+            </thead>
+            <tbody id="techBody"></tbody>
+          </table>
         </div>
-        <div class="chart-body" id="jobHourChart"></div>
+      </div>
+
+      <div class="bottom-row">
+        <div class="section">
+          <div class="sec-header"><span class="sec-title">Billable Efficiency</span><span class="sec-badge">Target: 100%</span></div>
+          <div id="billableList" style="flex:1;overflow:hidden;"></div>
+        </div>
+        <div class="section">
+          <div class="sec-header"><span class="sec-title">Sold Hour Efficiency</span><span class="sec-badge">0–1.0 Scale</span></div>
+          <div id="soldHourList" style="flex:1;overflow:hidden;"></div>
+        </div>
+        <div class="section">
+          <div class="sec-header"><span class="sec-title">Recall &amp; Leads</span><span class="sec-badge">Quality Metrics</span></div>
+          <div id="recallList" style="flex:1;overflow:hidden;"></div>
+        </div>
       </div>
 
     </div>
-  </div>
 
-  <!-- Bottom Grid -->
-  <div class="bottom-grid">
-
-    <!-- Billable Efficiency -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Billable Efficiency</span>
-        <span class="section-badge">Target: 100%</span>
+    <div class="right-col">
+      <div class="section" style="flex:1;">
+        <div class="sec-header"><span class="sec-title">Revenue Leaders</span><span class="sec-badge">Top Earners</span></div>
+        <div id="leaderList" style="flex:1;overflow:hidden;"></div>
       </div>
-      <div id="billableList" class="recall-list"></div>
-    </div>
-
-    <!-- Sold Hour Efficiency -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Sold Hour Efficiency</span>
-        <span class="section-badge">0–1.0 Scale</span>
+      <div class="section" style="flex:1;">
+        <div class="sec-header"><span class="sec-title">Rev / Job Hour</span><span class="sec-badge">Ranked</span></div>
+        <div id="jobHourChart" style="flex:1;overflow:hidden;padding:0.3vh 0;"></div>
       </div>
-      <div id="soldHourList" class="recall-list"></div>
     </div>
-
-    <!-- Recall & Leads -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Recall & Leads</span>
-        <span class="section-badge">Quality Metrics</span>
-      </div>
-      <div id="recallList" class="recall-list"></div>
-    </div>
-
   </div>
 
   <footer>
-    <div class="foot-left">Jackson Services &nbsp;·&nbsp; East Alabama & West Georgia &nbsp;·&nbsp; HVAC & Plumbing</div>
-    <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;" id="last-updated">Last updated: —</div>
-    <div class="foot-right">Locally Owned &amp; Operated</div>
+    <div class="foot-l">Jackson Services &nbsp;·&nbsp; East Alabama &amp; West Georgia &nbsp;·&nbsp; HVAC &amp; Plumbing</div>
+    <div class="foot-m" id="last-updated">Last updated: —</div>
+    <div class="foot-r">Locally Owned &amp; Operated</div>
   </footer>
 
 </div>
 
 <script>
-// ─── MONTHLY GOAL — update this number each month ───────────────────────────
+// ─── UPDATE THIS NUMBER EACH MONTH ───────────────────────────────────────────
 const MONTHLY_GOAL = 279000;
 // ─────────────────────────────────────────────────────────────────────────────
 
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQiuuZkcw27PkTMdzbG-QGSwn2RWHcUsKM4VMucCcDbaShUwWvSslzp-P30FkRkX7170TsyMt1dJR5x/pub?gid=0&single=true&output=csv';
 
 let techs = [];
+let currentSort = 'revenue';
+
+const fmt$ = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+const initials = name => name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+const billableColor = v => v >= 100 ? 'good' : v >= 90 ? 'warn' : 'bad';
+const colorMap = {good:'#2ECC71', warn:'#F39C12', bad:'#E74C3C'};
 
 function parseCSV(text) {
-  const lines = text.trim().split('\n').map(l => l.split(','));
-  const headers = lines[0].map(h => h.trim().replace(/"/g,''));
-  const rows = [];
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].map(c => c.trim().replace(/"/g,'').replace(/\$/g,'').replace(/%/g,''));
-    // Skip summary/total rows (first col is a number or empty)
-    if (!isNaN(cols[0]) || cols[0] === '') continue;
-    rows.push({
-      name:        cols[0],
-      hours:       parseFloat(cols[1]) || 0,
-      revJobHour:  parseFloat(cols[2]) || 0,
-      revPaidHour: parseFloat(cols[3]) || 0,
-      soldHourEff: parseFloat(cols[4]) || 0,
-      revenue:     parseFloat(cols[5]) || 0,
-      leads:       parseInt(cols[6])   || 0,
-      recall:      parseFloat(cols[7]) || 0,
-      jobs:        parseInt(cols[8])   || 0,
-      billable:    parseFloat(cols[9]) || 0,
-    });
-  }
-  return rows;
+  const lines = text.trim().split('\n');
+  return lines.slice(1).map(line => {
+    const c = line.split(',').map(x => x.trim().replace(/"/g,'').replace(/\$/g,'').replace(/%/g,''));
+    if (!isNaN(c[0]) || c[0] === '') return null;
+    return {
+      name: c[0], hours: parseFloat(c[1])||0, revJobHour: parseFloat(c[2])||0,
+      revPaidHour: parseFloat(c[3])||0, soldHourEff: parseFloat(c[4])||0,
+      revenue: parseFloat(c[5])||0, leads: parseInt(c[6])||0,
+      recall: parseFloat(c[7])||0, jobs: parseInt(c[8])||0, billable: parseFloat(c[9])||0,
+    };
+  }).filter(Boolean);
 }
 
 function updateKPIs() {
-  const totalRev    = techs.reduce((s,t) => s + t.revenue, 0);
-  const avgJobHour  = techs.reduce((s,t) => s + t.revJobHour, 0) / techs.length;
-  const avgPaidHour = techs.reduce((s,t) => s + t.revPaidHour, 0) / techs.length;
-  const avgBillable = techs.reduce((s,t) => s + t.billable, 0) / techs.length;
-  const totalHours  = techs.reduce((s,t) => s + t.hours, 0);
-  const totalJobs   = techs.reduce((s,t) => s + t.jobs, 0);
-  const goalPct     = Math.min((totalRev / MONTHLY_GOAL) * 100, 100);
-  const remaining   = Math.max(MONTHLY_GOAL - totalRev, 0);
+  const totalRev    = techs.reduce((s,t)=>s+t.revenue,0);
+  const avgJobHour  = techs.reduce((s,t)=>s+t.revJobHour,0)/techs.length;
+  const avgPaidHour = techs.reduce((s,t)=>s+t.revPaidHour,0)/techs.length;
+  const avgBillable = techs.reduce((s,t)=>s+t.billable,0)/techs.length;
+  const totalHours  = techs.reduce((s,t)=>s+t.hours,0);
+  const totalJobs   = techs.reduce((s,t)=>s+t.jobs,0);
+  const goalPct     = Math.min((totalRev/MONTHLY_GOAL)*100,100);
+  const remaining   = Math.max(MONTHLY_GOAL-totalRev,0);
 
-  // Header subtitle
-  document.querySelector('.subtitle').innerHTML =
-    `${techs.length} Technicians &nbsp;·&nbsp; ${totalJobs} Completed Jobs`;
-
-  // Revenue card
+  document.getElementById('header-meta').innerHTML = `${techs.length} Technicians &nbsp;·&nbsp; ${totalJobs} Completed Jobs`;
   document.getElementById('kpi-revenue').innerHTML = `
-    <div class="label">Total Revenue &nbsp;<span style="color:var(--text-muted);font-size:9px;letter-spacing:0.1em">MTD GOAL: ${fmt$(MONTHLY_GOAL)}</span></div>
-    <div style="display:flex;align-items:flex-end;gap:20px;margin-bottom:10px;">
-      <div class="value">${fmt$(totalRev)}</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--text-muted);margin-bottom:4px;">/ ${fmt$(MONTHLY_GOAL)}</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--warn);margin-bottom:4px;margin-left:auto;">${goalPct.toFixed(1)}% to goal</div>
+    <div class="kpi-label">Total Revenue <span style="color:var(--text-muted);font-size:0.85em;margin-left:0.5vw;">MTD GOAL: ${fmt$(MONTHLY_GOAL)}</span></div>
+    <div class="goal-row">
+      <div class="kpi-val">${fmt$(totalRev)}</div>
+      <div class="goal-slash">/ ${fmt$(MONTHLY_GOAL)}</div>
+      <div class="goal-pct">${goalPct.toFixed(1)}% to goal</div>
     </div>
-    <div style="width:100%;height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:6px;">
-      <div style="width:${goalPct.toFixed(1)}%;height:100%;background:linear-gradient(90deg,var(--orange),#FF9A50);border-radius:4px;"></div>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);">
-      <span>$0</span>
-      <span style="color:var(--warn);">${fmt$(remaining)} remaining</span>
-      <span>${fmt$(MONTHLY_GOAL)}</span>
-    </div>`;
+    <div class="goal-bar-track"><div class="goal-bar-fill" style="width:${goalPct.toFixed(1)}%"></div></div>
+    <div class="goal-info"><span>$0</span><span style="color:var(--warn)">${fmt$(remaining)} remaining</span><span>${fmt$(MONTHLY_GOAL)}</span></div>`;
+  document.getElementById('v-johhour').textContent  = '$'+Math.round(avgJobHour).toLocaleString();
+  document.getElementById('v-paidhour').textContent = '$'+Math.round(avgPaidHour).toLocaleString();
+  document.getElementById('v-billable').textContent = avgBillable.toFixed(1)+'%';
+  document.getElementById('v-hours').textContent    = Math.round(totalHours).toLocaleString();
+}
 
-  document.getElementById('kpi-johhour').innerHTML  = `<div class="label">Avg Rev / Job Hour</div><div class="value">${'$'+Math.round(avgJobHour).toLocaleString()}</div><div class="sub">Team average</div><div class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>`;
-  document.getElementById('kpi-paidhour').innerHTML = `<div class="label">Avg Rev / Paid Hour</div><div class="value">${'$'+Math.round(avgPaidHour).toLocaleString()}</div><div class="sub">Team average</div><div class="badge"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>`;
-  document.getElementById('kpi-billable').innerHTML = `<div class="label">Avg Billable Eff.</div><div class="value">${avgBillable.toFixed(1)}%</div><div class="sub">Team average</div><div class="badge"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>`;
-  document.getElementById('kpi-hours').innerHTML    = `<div class="label">Total Paid Hours</div><div class="value">${Math.round(totalHours).toLocaleString()}</div><div class="sub">Across all techs</div><div class="badge"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>`;
+function renderTable() {
+  const sorted = [...techs].sort((a,b) =>
+    currentSort==='revenue' ? b.revenue-a.revenue :
+    currentSort==='jobHour' ? b.revJobHour-a.revJobHour :
+    b.billable-a.billable);
+  document.getElementById('techBody').innerHTML = sorted.map(t => {
+    const cls = billableColor(t.billable);
+    return `<tr>
+      <td><div class="tech-cell"><div class="avatar">${initials(t.name)}</div><span class="tech-name">${t.name}</span></div></td>
+      <td>${t.hours.toFixed(1)}</td><td>${t.jobs}</td>
+      <td class="hl">${fmt$(t.revJobHour)}</td><td>${fmt$(t.revPaidHour)}</td>
+      <td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:${t.soldHourEff*100}%"></div></div><span>${(t.soldHourEff*100).toFixed(0)}%</span></div></td>
+      <td><span class="pill pill-${cls}">${t.billable.toFixed(1)}%</span></td>
+      <td class="hl">${fmt$(t.revenue)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function sortTable(key, btn) {
+  currentSort = key;
+  document.querySelectorAll('.sort-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function renderLeaders() {
+  const sorted = [...techs].sort((a,b)=>b.revenue-a.revenue).slice(0,5);
+  const rankCls = ['gold','silver','bronze','',''];
+  document.getElementById('leaderList').innerHTML = sorted.map((t,i)=>`
+    <div class="leader-row">
+      <div class="leader-rank ${rankCls[i]}">${i+1}</div>
+      <div class="leader-info"><div class="leader-name">${t.name}</div><div class="leader-meta">${t.jobs} jobs · ${t.hours.toFixed(0)} hrs</div></div>
+      <div class="leader-val">${fmt$(t.revenue)}</div>
+    </div>`).join('');
+}
+
+function renderJobHourChart() {
+  const sorted = [...techs].sort((a,b)=>b.revJobHour-a.revJobHour);
+  const max = sorted[0].revJobHour;
+  document.getElementById('jobHourChart').innerHTML = sorted.map((t,i)=>`
+    <div class="chart-row">
+      <div class="chart-label">${t.name.split(' ')[0]}</div>
+      <div class="chart-track"><div class="chart-fill ${i===0?'top-bar':''}" style="width:${(t.revJobHour/max*100).toFixed(1)}%">
+        <span class="chart-fillval">$${Math.round(t.revJobHour).toLocaleString()}</span>
+      </div></div>
+    </div>`).join('');
+}
+
+function renderMini(id, sorted, valFn, colorFn, maxVal, extraFn) {
+  document.getElementById(id).innerHTML = sorted.map(t=>{
+    const val = valFn(t), color = colorFn(t), pct = Math.min(val/maxVal*100,100);
+    return `<div class="mini-row">
+      <span class="mini-name">${t.name.split(' ')[0]} ${t.name.split(' ')[1][0]}.</span>
+      ${extraFn ? `<span class="mini-extra">${extraFn(t)}</span>` : ''}
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${pct.toFixed(1)}%;background:${color}"></div></div>
+      <span class="mini-val" style="color:${color}">${typeof val==='string'?val:val.toFixed(val>=10?1:2)+'%'}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderAll() {
+  updateKPIs();
+  renderTable();
+  renderLeaders();
+  renderJobHourChart();
+
+  const billSorted = [...techs].sort((a,b)=>b.billable-a.billable);
+  renderMini('billableList', billSorted,
+    t=>t.billable, t=>colorMap[billableColor(t.billable)],
+    billSorted[0].billable, null);
+
+  const soldSorted = [...techs].sort((a,b)=>b.soldHourEff-a.soldHourEff);
+  document.getElementById('soldHourList').innerHTML = soldSorted.map(t=>{
+    const pct = t.soldHourEff*100;
+    const color = pct>=60?'#2ECC71':pct>=40?'#F39C12':'#E74C3C';
+    return `<div class="mini-row">
+      <span class="mini-name">${t.name.split(' ')[0]} ${t.name.split(' ')[1][0]}.</span>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <span class="mini-val" style="color:${color}">${pct.toFixed(0)}%</span>
+    </div>`;
+  }).join('');
+
+  const recallSorted = [...techs].sort((a,b)=>b.recall-a.recall);
+  document.getElementById('recallList').innerHTML = recallSorted.map(t=>{
+    const color = t.recall>0?'#E74C3C':'#2ECC71';
+    return `<div class="mini-row">
+      <span class="mini-name">${t.name.split(' ')[0]} ${t.name.split(' ')[1][0]}.</span>
+      <span class="mini-extra">${t.leads} lead${t.leads!==1?'s':''}</span>
+      <span class="mini-val" style="color:${color}">${t.recall>0?t.recall.toFixed(2)+'%':'✓ 0%'}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('last-updated').textContent =
+    'Last updated: ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
 }
 
 async function loadData() {
-  const loading = document.getElementById('loading-overlay');
+  const loading = document.getElementById('loading');
   try {
     const res  = await fetch(CSV_URL);
     const text = await res.text();
     techs = parseCSV(text);
     if (loading) loading.style.display = 'none';
-    updateKPIs();
-    renderTable();
-    renderLeaders();
-    renderJobHourChart();
-    renderBillable();
-    renderSoldHour();
-    renderRecall();
+    renderAll();
   } catch(e) {
-    if (loading) loading.innerHTML = `<div style="text-align:center"><div style="font-size:18px;color:var(--orange);margin-bottom:8px;">⚠ Could not load sheet data</div><div style="font-size:13px;color:var(--text-muted);">Check your internet connection or verify the sheet is still published to web.</div></div>`;
+    if (loading) loading.innerHTML = `
+      <h2 style="color:var(--orange)">⚠ Could not load data</h2>
+      <p>Check internet connection or verify the sheet is published to web.</p>`;
   }
 }
 
-function initials(name) {
-  return name.split(' ').map(n => n[0]).join('').substring(0,2);
-}
-
-function fmt$(n) {
-  return '$' + n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-}
-
-function billableColor(v) {
-  if (v >= 100) return 'good';
-  if (v >= 90)  return 'warn';
-  return 'bad';
-}
-
-function billablePill(v) {
-  const cls = billableColor(v);
-  return `<span class="pill pill-${cls}">${v.toFixed(2)}%</span>`;
-}
-
-let currentSort = 'revenue';
-
-function sortTable(key) {
-  currentSort = key;
-  document.querySelectorAll('.sort-tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  renderTable();
-}
-
-function renderTable() {
-  const sorted = [...techs].sort((a,b) => {
-    if (currentSort === 'revenue')    return b.revenue - a.revenue;
-    if (currentSort === 'jobHour')    return b.revJobHour - a.revJobHour;
-    if (currentSort === 'efficiency') return b.billable - a.billable;
-    return 0;
-  });
-
-  const maxRev = Math.max(...techs.map(t => t.revenue));
-
-  document.getElementById('techBody').innerHTML = sorted.map(t => `
-    <tr>
-      <td>
-        <div class="tech-name">
-          <div class="tech-avatar">${initials(t.name)}</div>
-          <span class="name-text">${t.name}</span>
-        </div>
-      </td>
-      <td>${t.hours.toFixed(1)}</td>
-      <td>${t.jobs}</td>
-      <td class="highlight">${fmt$(t.revJobHour)}</td>
-      <td>${fmt$(t.revPaidHour)}</td>
-      <td>
-        <div class="bar-wrap">
-          <div class="bar-track"><div class="bar-fill" style="width:${t.soldHourEff * 100}%"></div></div>
-          <span class="bar-val">${(t.soldHourEff * 100).toFixed(0)}%</span>
-        </div>
-      </td>
-      <td>${billablePill(t.billable)}</td>
-      <td class="highlight">${fmt$(t.revenue)}</td>
-    </tr>
-  `).join('');
-}
-
-function renderLeaders() {
-  const sorted = [...techs].sort((a,b) => b.revenue - a.revenue).slice(0, 5);
-  const rankClasses = ['gold','silver','bronze','',''];
-  const maxRev = sorted[0].revenue;
-
-  document.getElementById('leaderList').innerHTML = sorted.map((t, i) => `
-    <div class="leader-row">
-      <div class="leader-rank ${rankClasses[i]}">${i+1}</div>
-      <div class="leader-info">
-        <div class="leader-name">${t.name}</div>
-        <div class="leader-meta">${t.jobs} jobs &nbsp;·&nbsp; ${t.hours.toFixed(0)} hrs</div>
-      </div>
-      <div class="leader-val">${fmt$(t.revenue)}</div>
-    </div>
-  `).join('');
-}
-
-function renderJobHourChart() {
-  const sorted = [...techs].sort((a,b) => b.revJobHour - a.revJobHour);
-  const maxVal = sorted[0].revJobHour;
-
-  document.getElementById('jobHourChart').innerHTML = sorted.map((t, i) => `
-    <div class="chart-row">
-      <div class="chart-label">${t.name.split(' ')[0]}</div>
-      <div class="chart-bar-track">
-        <div class="chart-bar-fill ${i === 0 ? 'top' : ''}" style="width:${(t.revJobHour/maxVal*100).toFixed(1)}%">
-          <span class="chart-bar-val">$${t.revJobHour.toFixed(0)}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderBillable() {
-  const sorted = [...techs].sort((a,b) => b.billable - a.billable);
-  const maxVal = Math.max(...techs.map(t => t.billable));
-
-  document.getElementById('billableList').innerHTML = sorted.map(t => {
-    const cls = billableColor(t.billable);
-    const colors = {good: '#2ECC71', warn: '#F39C12', bad: '#E74C3C'};
-    return `
-    <div class="recall-row">
-      <span class="recall-name">${t.name.split(' ')[0]} ${t.name.split(' ')[1][0]}.</span>
-      <div class="recall-bar-wrap">
-        <div class="recall-track">
-          <div class="recall-fill" style="width:${Math.min(t.billable/maxVal*100,100).toFixed(1)}%; background:${colors[cls]};"></div>
-        </div>
-        <span class="recall-pct" style="color:${colors[cls]}">${t.billable.toFixed(1)}%</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderSoldHour() {
-  const sorted = [...techs].sort((a,b) => b.soldHourEff - a.soldHourEff);
-  document.getElementById('soldHourList').innerHTML = sorted.map(t => {
-    const pct = t.soldHourEff * 100;
-    const color = pct >= 60 ? '#2ECC71' : pct >= 40 ? '#F39C12' : '#E74C3C';
-    return `
-    <div class="recall-row">
-      <span class="recall-name">${t.name.split(' ')[0]} ${t.name.split(' ')[1][0]}.</span>
-      <div class="recall-bar-wrap">
-        <div class="recall-track">
-          <div class="recall-fill" style="width:${pct}%; background:${color};"></div>
-        </div>
-        <span class="recall-pct" style="color:${color}">${pct.toFixed(0)}%</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderRecall() {
-  const sorted = [...techs].sort((a,b) => b.recall - a.recall);
-  document.getElementById('recallList').innerHTML = sorted.map(t => {
-    const hasRecall = t.recall > 0;
-    const color = hasRecall ? '#E74C3C' : '#2ECC71';
-    return `
-    <div class="recall-row">
-      <span class="recall-name" style="flex:1">${t.name.split(' ')[0]} ${t.name.split(' ')[1][0]}.</span>
-      <span style="font-size:11px;color:var(--text-muted);margin-right:12px">${t.leads} lead${t.leads !== 1 ? 's' : ''}</span>
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:${color}">
-        ${t.recall > 0 ? t.recall.toFixed(2)+'%' : '✓ 0%'}
-      </span>
-    </div>`;
-  }).join('');
-}
-
-// Load on startup, then refresh every hour
-async function init() {
-  await loadData();
-  const el = document.getElementById('last-updated');
-  if (el) el.textContent = 'Last updated: ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-}
-
-async function refresh() {
-  await loadData();
-  const el = document.getElementById('last-updated');
-  if (el) el.textContent = 'Last updated: ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-}
-
-init();
-setInterval(refresh, 60 * 60 * 1000);
+loadData();
+setInterval(loadData, 60 * 60 * 1000);
 </script>
 </body>
 </html>
