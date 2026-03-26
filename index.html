@@ -871,7 +871,7 @@ function updateKPIs() {
 async function loadData() {
   const loading = document.getElementById('loading-overlay');
   try {
-    const res  = await fetch(CSV_URL, { credentials: 'include' });
+    const res  = await fetch(CSV_URL);
     const text = await res.text();
     techs = parseCSV(text);
     if (loading) loading.style.display = 'none';
@@ -1036,17 +1036,21 @@ function renderRecall() {
   }).join('');
 }
 
-// Update the footer timestamp after each load
-const _origLoad = loadData;
-loadData = async function() {
-  await _origLoad();
+// Load on startup, then refresh every hour
+async function init() {
+  await loadData();
   const el = document.getElementById('last-updated');
   if (el) el.textContent = 'Last updated: ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-};
+}
 
-// Load on startup, then refresh every hour
-loadData();
-setInterval(loadData, 60 * 60 * 1000);
+async function refresh() {
+  await loadData();
+  const el = document.getElementById('last-updated');
+  if (el) el.textContent = 'Last updated: ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+}
+
+init();
+setInterval(refresh, 60 * 60 * 1000);
 </script>
 </body>
 </html>
