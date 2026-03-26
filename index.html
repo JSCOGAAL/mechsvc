@@ -803,8 +803,7 @@
 const MONTHLY_GOAL = 279000;
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SHEET_ID = '1h7X2GxZSYlPkChxao8hQHi0f81DVVWv60rLon0OEa4k';
-const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQiuuZkcw27PkTMdzbG-QGSwn2RWHcUsKM4VMucCcDbaShUwWvSslzp-P30FkRkX7170TsyMt1dJR5x/pub?gid=0&single=true&output=csv';
 
 let techs = [];
 
@@ -884,7 +883,7 @@ async function loadData() {
     renderSoldHour();
     renderRecall();
   } catch(e) {
-    if (loading) loading.innerHTML = `<div style="text-align:center"><div style="font-size:18px;color:var(--orange);margin-bottom:8px;">⚠ Could not load sheet data</div><div style="font-size:13px;color:var(--text-muted);">Make sure you're signed into Google and the sheet is accessible.</div></div>`;
+    if (loading) loading.innerHTML = `<div style="text-align:center"><div style="font-size:18px;color:var(--orange);margin-bottom:8px;">⚠ Could not load sheet data</div><div style="font-size:13px;color:var(--text-muted);">Check your internet connection or verify the sheet is still published to web.</div></div>`;
   }
 }
 
