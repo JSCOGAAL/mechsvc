@@ -284,7 +284,11 @@ const MONTHLY_GOAL = 410000;
 
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQiuuZkcw27PkTMdzbG-QGSwn2RWHcUsKM4VMucCcDbaShUwWvSslzp-P30FkRkX7170TsyMt1dJR5x/pub?gid=0&single=true&output=csv';
 
+// Second sheet: Daily Huddle MTD — used only to pull the Non-Job Revenue total (column T)
+const NONJOB_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRLnebyBaQcGsbrgTgt_AIiqJUMRqSlZnuENAEUCzxgfjwWEmgJie1UTgZDQtmvM_WGG1ULro_7zmq_/pub?output=csv';
+
 let techs = [];
+let nonJobRevenue = 0;
 let currentSort = 'revenue';
 
 const fmt$ = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -306,8 +310,31 @@ function parseCSV(text) {
   }).filter(Boolean);
 }
 
+// Only these departments' Non-Job Revenue (column T) count toward the mechanical dashboard
+const NONJOB_DEPARTMENTS = [
+  'HVAC Mechanical:AL Service',
+  'HVAC Mechanical:GA Service',
+  'Mechanical AL Service Agreements',
+  'Mechanical GA Service Agreements'
+];
+
+// Parses the Daily Huddle MTD sheet and sums column T (Non-Job Revenue, index 19)
+// for only the mechanical department rows listed in NONJOB_DEPARTMENTS.
+function parseNonJobRevenue(text) {
+  const lines = text.trim().split('\n');
+  let total = 0;
+  lines.slice(1).forEach(line => {
+    const c = line.split(',').map(x => x.trim().replace(/"/g,'').replace(/\$/g,'').replace(/%/g,''));
+    if (!isNaN(c[0]) || c[0] === '') return; // skip totals row / blank rows
+    if (!NONJOB_DEPARTMENTS.includes(c[0])) return; // skip departments outside this dashboard
+    total += parseFloat(c[19]) || 0; // column T = Non-Job Revenue
+  });
+  return total;
+}
+
 function updateKPIs() {
-  const totalRev    = techs.reduce((s,t)=>s+t.revenue,0);
+  const jobRev      = techs.reduce((s,t)=>s+t.revenue,0);
+  const totalRev     = jobRev + nonJobRevenue;
   const avgJobHour  = techs.reduce((s,t)=>s+t.revJobHour,0)/techs.length;
   const avgPaidHour = techs.reduce((s,t)=>s+t.revPaidHour,0)/techs.length;
   const avgBillable = techs.reduce((s,t)=>s+t.billable,0)/techs.length;
@@ -430,9 +457,16 @@ function renderAll() {
 async function loadData() {
   const loading = document.getElementById('loading');
   try {
-    const res  = await fetch(CSV_URL);
-    const text = await res.text();
-    techs = parseCSV(text);
+    const [techRes, nonJobRes] = await Promise.all([
+      fetch(CSV_URL),
+      fetch(NONJOB_CSV_URL)
+    ]);
+    const [techText, nonJobText] = await Promise.all([
+      techRes.text(),
+      nonJobRes.text()
+    ]);
+    techs = parseCSV(techText);
+    nonJobRevenue = parseNonJobRevenue(nonJobText);
     if (loading) loading.style.display = 'none';
     renderAll();
   } catch(e) {
